@@ -1,0 +1,61 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mysite-mysql-config
+data:
+  my.cnf: |-
+    [mysqld]
+    default_authentication_plugin=mysql_native_password
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysite-mysql-root-password
+data:
+  password: bXktc3VwZXItc2VjcmV0LXBhc3M=
+---
+apiVersion: mysql.oracle.com/v1alpha1
+kind: Cluster
+metadata:
+  name: mysite-mysql
+spec:
+  members: 3
+  config:
+    name: mysite-mysql-config
+  rootPasswordSecret:
+    name: mysite-mysql-root-password
+---
+apiVersion: drupal.sylus.ca/v1beta1
+kind: Droplet
+metadata:
+  name: mysite
+spec:
+  replicas: 1
+  image: drupalwxt/site-wxt
+  secretRef: mysite
+  tlsSecretRef: mysite-tls
+  envFrom:
+    - prefix: "DRUPAL_"
+      secretRef:
+        name: mysite-salt
+  env:
+    - name: DRUPAL_DB_HOST
+      value: mysite-mysql-master
+    - name: DRUPAL_DB_USER
+      valueFrom:
+        secretKeyRef:
+          name: mysite-db
+          key: USER
+    - name: DRUPAL_DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysite-db
+          key: PASSWORD
+    - name: DRUPAL_DB_NAME
+      valueFrom:
+        secretKeyRef:
+          name: mysite-db
+          key: DATABASE
+  domains:
+    - drupal.sylus.ca

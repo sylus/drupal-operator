@@ -1,0 +1,67 @@
+run:
+  concurrency: 4
+  deadline: 1m
+  issues-exit-code: 1
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+
+linters-settings:
+  dupl:
+    threshold: 400
+  goconst:
+    min-len: 3
+    min-occurrences: 3
+  gocritic:
+    enabled-checks:
+      - captlocal
+      - rangeValCopy
+    settings:
+      captLocal:
+        checkLocals: true
+      rangeValCopy:
+        sizeThreshold: 50
+  gocyclo:
+    min-complexity: 10
+  gofmt:
+    simplify: true
+  goimports:
+    local-prefixes: github.com/org/project
+  golint:
+    min-confidence: 0.8
+  govet:
+    check-shadowing: true
+  misspell:
+    locale: US
+  lll:
+    line-length: 170
+    tab-width: 4
+  maligned:
+    suggest-new: true
+  nakedret:
+    max-func-lines: 30
+
+linters:
+  presets:
+    - bugs
+    - unused
+    - format
+    - style
+    - complexity
+    - performance
+
+  # we should re-enable them and make lint pass
+  disable:
+    - goimports
+    - maligned
+    - gochecknoglobals
+    - gochecknoinits
+
+issues:
+  max-same-issues: 0
+  exclude-use-default: false
+  exclude:
+    # gosec G104, about unhandled errors. We do that with errcheck already
+    - "G104: Errors unhandled"

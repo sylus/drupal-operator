@@ -1,0 +1,3 @@
+version: "1"
+domain: sylus.ca
+repo: github.com/sylus/drupal-operator

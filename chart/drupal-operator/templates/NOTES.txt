@@ -1,0 +1,1 @@
+Drupal Operator installed in {{ .Release.Namespace }}
