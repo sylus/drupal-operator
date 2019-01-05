@@ -63,7 +63,7 @@ http {
 				fastcgi_read_timeout 120;
 				fastcgi_param SCRIPT_FILENAME $request_filename;
 				fastcgi_intercept_errors on;
-				fastcgi_pass mysite:9000;
+				fastcgi_pass [[ .Host ]]:9000;
 			}
 
 			location ~* ^/(s3fs-css|s3fs-js|sites/default/files)/(.*) {

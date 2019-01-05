@@ -127,7 +127,7 @@ func (droplet *Drupal) envFrom() []corev1.EnvFromSource {
 		{
 			SecretRef: &corev1.SecretEnvSource{
 				LocalObjectReference: corev1.LocalObjectReference{
-					Name: droplet.ComponentName(DrupalSecret),
+					Name: fmt.Sprintf("%s-%s", droplet.ComponentName(DrupalSecret), "mysql-root-password"),
 				},
 			},
 		},

@@ -91,14 +91,14 @@ var ConfigMapSettings = `
  * @endcode
  */
  $databases['default']['default'] = array (
-  'database' => '{{ .Name }}',
-  'username' => '{{ .User }}',
-  'password' => '{{ .Pass }}',
+  'database' => '[[ .Name ]]',
+  'username' => '[[ .User ]]',
+  'password' => '[[ .Pass ]]',
   'prefix' => '',
-  'host' => '{{ .Host }}',
-  'port' => '{{ .Port }}',
-  'namespace' => '{{ .Namespace }}',
-  'driver' => '{{ .Driver }}',
+  'host' => '[[ .Host ]]',
+  'port' => '[[ .Port ]]',
+  'namespace' => '[[ .Namespace ]]',
+  'driver' => '[[ .Driver ]]',
 );
 
 /**

@@ -28,7 +28,7 @@ var ControllerLabels = map[string]string{
 // GenerateConfig returns rendered template against given interface
 func GenerateConfig(TemplateInput interface{}, configmapTemplate string) *string {
 	output := new(bytes.Buffer)
-	tpl, err := template.New("config").Parse(configmapTemplate)
+	tpl, err := template.New("config").Delims("[[", "]]").Parse(configmapTemplate)
 	if err != nil {
 		return nil
 	}

@@ -46,9 +46,9 @@ func NewConfigMapSyncer(droplet *drupal.Drupal, c client.Client, scheme *runtime
 	objLabels := droplet.ComponentLabels(drupal.DrupalConfigMap)
 
 	templateInput := Settings{
-		Name:      "wxt",
+		Name:      "drupal",
 		User:      "root",
-		Pass:      "WxT@2018",
+		Pass:      "my-super-secret-pass",
 		Host:      fmt.Sprintf("%s-%s", droplet.ComponentName(drupal.DrupalConfigMap), "mysql"),
 		Port:      "3306",
 		Namespace: "Drupal\\Core\\Database\\Driver\\mysql",
