@@ -16,7 +16,7 @@ limitations under the License.
 package nginx
 
 const (
-	defaultTag   = "wxt"
+	defaultTag   = "canada"
 	defaultImage = "drupalwxt/nginx"
 )
 

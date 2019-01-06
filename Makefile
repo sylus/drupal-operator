@@ -1,7 +1,7 @@
 APP_VERSION ?= $(shell git describe --abbrev=5 --dirty --tags --always)
 REGISTRY := sylus
 IMAGE_NAME := drupal-operator
-BUILD_TAG := v0.0.1
+BUILD_TAG := v0.0.2
 IMAGE_TAGS := $(APP_VERSION)
 KUBEBUILDER_VERSION ?= 1.0.6
 BINDIR ?= $(PWD)/bin
