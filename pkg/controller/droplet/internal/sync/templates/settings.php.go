@@ -1,8 +1,7 @@
 package templates
 
 // ConfigMapSettings Drupal settings.php file
-var ConfigMapSettings = `
-<?php
+var ConfigMapSettings = `<?php
 
 /**
  * @file

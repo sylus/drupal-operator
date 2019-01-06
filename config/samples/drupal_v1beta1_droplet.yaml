@@ -23,6 +23,7 @@ metadata:
   name: mysite-mysql
   namespace: default
 spec:
+  multiMaster: true
   members: 3
   config:
     name: mysite-mysql-config
