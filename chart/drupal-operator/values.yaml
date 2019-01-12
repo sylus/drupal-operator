@@ -1,7 +1,7 @@
 # Default values for drupal-operator.
 replicaCount: 1
 
-image: sylus/drupal-operator:v0.0.2
+image: sylus/drupal-operator:v0.0.3
 imagePullPolicy: IfNotPresent
 
 nameOverride: ""

@@ -16,8 +16,8 @@ limitations under the License.
 package nginx
 
 const (
-	defaultTag   = "canada"
-	defaultImage = "drupalwxt/nginx"
+	defaultTag   = "0.0.1"
+	defaultImage = "drupalwxt/site-canada"
 )
 
 // SetDefaults sets Nginx field defaults

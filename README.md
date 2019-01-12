@@ -67,7 +67,7 @@ make deploy
 kubectl apply -f config/samples/drupal_v1beta1_droplet.yaml
 
 # Run Drush and install our site
-export POD_NAME=(kubectl get pods --namespace default -l "app.kubernetes.io/component=drupal" -o jsonpath="{.items[0].metadata.name}")
+export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/component=drupal" -o jsonpath="{.items[0].metadata.name}")
 kubectl exec -it $POD_NAME -n default -- drush si wxt \
     --sites-subdir=default \
     --account-name=admin \

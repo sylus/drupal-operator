@@ -16,8 +16,8 @@ limitations under the License.
 package drupal
 
 const (
-	defaultTag           = "canada"
-	defaultImage         = "drupalwxt/site-wxt"
+	defaultTag           = "0.0.1"
+	defaultImage         = "drupalwxt/site-canada"
 	codeSrcMountPath     = "/var/run/sylus.ca/code/src"
 	defaultCodeMountPath = "/var/www/site/web/droplet-content"
 )
