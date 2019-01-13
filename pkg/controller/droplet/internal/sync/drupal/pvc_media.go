@@ -44,7 +44,7 @@ func NewMediaPVCSyncer(droplet *drupal.Drupal, c client.Client, scheme *runtime.
 		out := existing.(*corev1.PersistentVolumeClaim)
 		out.Labels = labels.Merge(labels.Merge(out.Labels, objLabels), common.ControllerLabels)
 
-		if droplet.Spec.MediaVolumeSpec == nil || droplet.Spec.MediaVolumeSpec.PersistentVolumeClaim == nil {
+		if droplet.Spec.Drupal.MediaVolumeSpec == nil || droplet.Spec.Drupal.MediaVolumeSpec.PersistentVolumeClaim == nil {
 			return fmt.Errorf(".spec.media.persistentVolumeClaim is not defined")
 		}
 
@@ -53,7 +53,7 @@ func NewMediaPVCSyncer(droplet *drupal.Drupal, c client.Client, scheme *runtime.
 			return nil
 		}
 
-		out.Spec = *droplet.Spec.MediaVolumeSpec.PersistentVolumeClaim
+		out.Spec = *droplet.Spec.Drupal.MediaVolumeSpec.PersistentVolumeClaim
 
 		return nil
 	})

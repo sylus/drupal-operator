@@ -162,11 +162,11 @@ func (r *ReconcileDroplet) Reconcile(request reconcile.Request) (reconcile.Resul
 		syncNginx.NewIngressSyncer(nginx, r.Client, r.scheme),
 	}
 
-	if droplet.Spec.CodeVolumeSpec != nil && droplet.Spec.CodeVolumeSpec.PersistentVolumeClaim != nil {
+	if droplet.Spec.Drupal.CodeVolumeSpec != nil && droplet.Spec.Drupal.CodeVolumeSpec.PersistentVolumeClaim != nil {
 		syncers = append(syncers, syncDrupal.NewCodePVCSyncer(droplet, r.Client, r.scheme))
 	}
 
-	if droplet.Spec.MediaVolumeSpec != nil && droplet.Spec.MediaVolumeSpec.PersistentVolumeClaim != nil {
+	if droplet.Spec.Drupal.MediaVolumeSpec != nil && droplet.Spec.Drupal.MediaVolumeSpec.PersistentVolumeClaim != nil {
 		syncers = append(syncers, syncDrupal.NewMediaPVCSyncer(droplet, r.Client, r.scheme))
 	}
 

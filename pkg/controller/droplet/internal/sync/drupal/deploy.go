@@ -72,8 +72,8 @@ func NewDeploymentSyncer(droplet *drupal.Drupal, secret *corev1.Secret, c client
 			return err
 		}
 
-		if droplet.Spec.Replicas != nil {
-			out.Spec.Replicas = droplet.Spec.Replicas
+		if droplet.Spec.Drupal.Replicas != nil {
+			out.Spec.Replicas = droplet.Spec.Drupal.Replicas
 		}
 
 		return nil

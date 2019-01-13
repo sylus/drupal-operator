@@ -19,20 +19,20 @@ const (
 	defaultTag           = "0.0.1"
 	defaultImage         = "drupalwxt/site-canada"
 	codeSrcMountPath     = "/var/run/sylus.ca/code/src"
-	defaultCodeMountPath = "/var/www/site/web/droplet-content"
+	defaultCodeMountPath = "/var/www/html/modules/custom"
 )
 
 // SetDefaults sets Drupal field defaults
 func (o *Drupal) SetDefaults() {
-	if len(o.Spec.Image) == 0 {
-		o.Spec.Image = defaultImage
+	if len(o.Spec.Drupal.Image) == 0 {
+		o.Spec.Drupal.Image = defaultImage
 	}
 
-	if len(o.Spec.Tag) == 0 {
-		o.Spec.Tag = defaultTag
+	if len(o.Spec.Drupal.Tag) == 0 {
+		o.Spec.Drupal.Tag = defaultTag
 	}
 
-	if o.Spec.CodeVolumeSpec != nil && len(o.Spec.CodeVolumeSpec.MountPath) == 0 {
-		o.Spec.CodeVolumeSpec.MountPath = defaultCodeMountPath
+	if o.Spec.Drupal.CodeVolumeSpec != nil && len(o.Spec.Drupal.CodeVolumeSpec.MountPath) == 0 {
+		o.Spec.Drupal.CodeVolumeSpec.MountPath = defaultCodeMountPath
 	}
 }

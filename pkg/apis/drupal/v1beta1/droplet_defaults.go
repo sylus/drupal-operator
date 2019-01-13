@@ -21,7 +21,10 @@ var (
 
 // nolint: golint
 func SetDefaults_DropletSpec(spec *DropletSpec) {
-	if spec.Replicas == nil || *spec.Replicas < 1 {
-		spec.Replicas = &oneReplica
+	if spec.Drupal.Replicas == nil || *spec.Drupal.Replicas < 1 {
+		spec.Drupal.Replicas = &oneReplica
+	}
+	if spec.Nginx.Replicas == nil || *spec.Nginx.Replicas < 1 {
+		spec.Nginx.Replicas = &oneReplica
 	}
 }

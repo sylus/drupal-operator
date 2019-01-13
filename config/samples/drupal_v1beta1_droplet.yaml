@@ -36,17 +36,23 @@ metadata:
   name: mysite
   namespace: default
 spec:
-  replicas: 1
-  image: drupalwxt/site-wxt
+  drupal:
+    replicas: 1
+    image: drupalwxt/site-canada
+    Tag: "0.0.1"
+    env:
+      - name: DRUPAL_DB_HOST
+        value: mysite-mysql
+      - name: DRUPAL_DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: mysite-drupal-mysql-root-password
+            key: password
+  nginx:
+    replicas: 1
+    image: drupalwxt/site-canada
+    Tag: "nginx-0.0.1"
   secretRef: mysite
   tlsSecretRef: mysite-tls
-  env:
-    - name: DRUPAL_DB_HOST
-      value: mysite-mysql
-    - name: DRUPAL_DB_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: mysite-drupal-mysql-root-password
-          key: password
   domains:
     - drupal.sylus.ca

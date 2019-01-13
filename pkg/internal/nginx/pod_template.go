@@ -41,7 +41,7 @@ func (droplet *Nginx) env() []corev1.EnvVar {
 			Name:  "NGINX_HOST",
 			Value: fmt.Sprintf("http://%s", droplet.Spec.Domains[0]),
 		},
-	}, droplet.Spec.Env...)
+	}, droplet.Spec.Nginx.Env...)
 
 	return out
 }
@@ -57,13 +57,13 @@ func (droplet *Nginx) envFrom() []corev1.EnvFromSource {
 		},
 	}
 
-	out = append(out, droplet.Spec.EnvFrom...)
+	out = append(out, droplet.Spec.Nginx.EnvFrom...)
 
 	return out
 }
 
 func (droplet *Nginx) volumeMounts() (out []corev1.VolumeMount) {
-	out = droplet.Spec.VolumeMounts
+	out = droplet.Spec.Nginx.VolumeMounts
 
 	out = append(out, corev1.VolumeMount{
 		Name:      "cm-nginx",
@@ -91,7 +91,7 @@ func (droplet *Nginx) configMap() corev1.Volume {
 }
 
 func (droplet *Nginx) volumes() []corev1.Volume {
-	return append(droplet.Spec.Volumes, droplet.configMap())
+	return append(droplet.Spec.Nginx.Volumes, droplet.configMap())
 }
 
 // PodTemplateSpec generates a pod template spec suitable for use with Nginx
@@ -99,7 +99,7 @@ func (droplet *Nginx) PodTemplateSpec() (out corev1.PodTemplateSpec) {
 	out = corev1.PodTemplateSpec{}
 	out.ObjectMeta.Labels = droplet.PodLabels()
 
-	out.Spec.ImagePullSecrets = droplet.Spec.ImagePullSecrets
+	out.Spec.ImagePullSecrets = droplet.Spec.Nginx.ImagePullSecrets
 	if len(droplet.Spec.ServiceAccountName) > 0 {
 		out.Spec.ServiceAccountName = droplet.Spec.ServiceAccountName
 	}

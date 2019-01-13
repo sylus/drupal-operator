@@ -74,8 +74,8 @@ func (o *Nginx) Labels() labels.Set {
 	}
 
 	version := defaultTag
-	if len(o.Spec.Tag) != 0 {
-		version = o.Spec.Tag
+	if len(o.Spec.Nginx.Tag) != 0 {
+		version = o.Spec.Nginx.Tag
 	}
 
 	labels := labels.Set{
@@ -117,7 +117,7 @@ func (o *Nginx) ComponentName(component component) string {
 // ImageTagVersion returns the version from the image tag in a format suitable
 // fro kubernetes object names and labels
 func (o *Nginx) ImageTagVersion() string {
-	return slugify.Slugify(o.Spec.Tag)
+	return slugify.Slugify(o.Spec.Nginx.Tag)
 }
 
 // PodLabels return labels to apply to web pods

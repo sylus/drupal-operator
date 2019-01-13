@@ -74,8 +74,8 @@ func (o *Drupal) Labels() labels.Set {
 	}
 
 	version := defaultTag
-	if len(o.Spec.Tag) != 0 {
-		version = o.Spec.Tag
+	if len(o.Spec.Drupal.Tag) != 0 {
+		version = o.Spec.Drupal.Tag
 	}
 
 	labels := labels.Set{
@@ -117,7 +117,7 @@ func (o *Drupal) ComponentName(component component) string {
 // ImageTagVersion returns the version from the image tag in a format suitable
 // fro kubernetes object names and labels
 func (o *Drupal) ImageTagVersion() string {
-	return slugify.Slugify(o.Spec.Tag)
+	return slugify.Slugify(o.Spec.Drupal.Tag)
 }
 
 // PodLabels return labels to apply to web pods

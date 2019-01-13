@@ -44,7 +44,7 @@ func NewCodePVCSyncer(droplet *drupal.Drupal, c client.Client, scheme *runtime.S
 		out := existing.(*corev1.PersistentVolumeClaim)
 		out.Labels = labels.Merge(labels.Merge(out.Labels, objLabels), common.ControllerLabels)
 
-		if droplet.Spec.CodeVolumeSpec == nil || droplet.Spec.CodeVolumeSpec.PersistentVolumeClaim == nil {
+		if droplet.Spec.Drupal.CodeVolumeSpec == nil || droplet.Spec.Drupal.CodeVolumeSpec.PersistentVolumeClaim == nil {
 			return fmt.Errorf(".spec.code.persistentVolumeClaim is not defined")
 		}
 
@@ -53,7 +53,7 @@ func NewCodePVCSyncer(droplet *drupal.Drupal, c client.Client, scheme *runtime.S
 			return nil
 		}
 
-		out.Spec = *droplet.Spec.CodeVolumeSpec.PersistentVolumeClaim
+		out.Spec = *droplet.Spec.Drupal.CodeVolumeSpec.PersistentVolumeClaim
 
 		return nil
 	})

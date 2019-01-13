@@ -75,7 +75,7 @@ var (
 )
 
 func (droplet *Drupal) image() string {
-	return fmt.Sprintf("%s:%s", droplet.Spec.Image, droplet.Spec.Tag)
+	return fmt.Sprintf("%s:%s", droplet.Spec.Drupal.Image, droplet.Spec.Drupal.Tag)
 }
 
 func (droplet *Drupal) env() []corev1.EnvVar {
@@ -88,11 +88,11 @@ func (droplet *Drupal) env() []corev1.EnvVar {
 			Name:  "DRUPAL_SITEURL",
 			Value: fmt.Sprintf("http://%s/droplet", droplet.Spec.Domains[0]),
 		},
-	}, droplet.Spec.Env...)
+	}, droplet.Spec.Drupal.Env...)
 
-	if droplet.Spec.MediaVolumeSpec != nil {
-		if droplet.Spec.MediaVolumeSpec.S3VolumeSource != nil {
-			for _, env := range droplet.Spec.MediaVolumeSpec.S3VolumeSource.Env {
+	if droplet.Spec.Drupal.MediaVolumeSpec != nil {
+		if droplet.Spec.Drupal.MediaVolumeSpec.S3VolumeSource != nil {
+			for _, env := range droplet.Spec.Drupal.MediaVolumeSpec.S3VolumeSource.Env {
 				if name, ok := s3EnvVars[env.Name]; ok {
 					_env := env.DeepCopy()
 					_env.Name = name
@@ -101,16 +101,16 @@ func (droplet *Drupal) env() []corev1.EnvVar {
 			}
 		}
 
-		if droplet.Spec.MediaVolumeSpec.GCSVolumeSource != nil {
+		if droplet.Spec.Drupal.MediaVolumeSpec.GCSVolumeSource != nil {
 			out = append(out, corev1.EnvVar{
 				Name:  "MEDIA_BUCKET",
-				Value: fmt.Sprintf("gs://%s", droplet.Spec.MediaVolumeSpec.GCSVolumeSource.Bucket),
+				Value: fmt.Sprintf("gs://%s", droplet.Spec.Drupal.MediaVolumeSpec.GCSVolumeSource.Bucket),
 			})
 			out = append(out, corev1.EnvVar{
 				Name:  "MEDIA_BUCKET_PREFIX",
-				Value: droplet.Spec.MediaVolumeSpec.GCSVolumeSource.PathPrefix,
+				Value: droplet.Spec.Drupal.MediaVolumeSpec.GCSVolumeSource.PathPrefix,
 			})
-			for _, env := range droplet.Spec.MediaVolumeSpec.GCSVolumeSource.Env {
+			for _, env := range droplet.Spec.Drupal.MediaVolumeSpec.GCSVolumeSource.Env {
 				if name, ok := gcsEnvVars[env.Name]; ok {
 					_env := env.DeepCopy()
 					_env.Name = name
@@ -133,20 +133,20 @@ func (droplet *Drupal) envFrom() []corev1.EnvFromSource {
 		},
 	}
 
-	out = append(out, droplet.Spec.EnvFrom...)
+	out = append(out, droplet.Spec.Drupal.EnvFrom...)
 
 	return out
 }
 
 func (droplet *Drupal) gitCloneEnv() []corev1.EnvVar {
-	if droplet.Spec.CodeVolumeSpec.GitDir == nil {
+	if droplet.Spec.Drupal.CodeVolumeSpec.GitDir == nil {
 		return []corev1.EnvVar{}
 	}
 
 	out := []corev1.EnvVar{
 		{
 			Name:  "GIT_CLONE_URL",
-			Value: droplet.Spec.CodeVolumeSpec.GitDir.Repository,
+			Value: droplet.Spec.Drupal.CodeVolumeSpec.GitDir.Repository,
 		},
 		{
 			Name:  "SRC_DIR",
@@ -154,20 +154,20 @@ func (droplet *Drupal) gitCloneEnv() []corev1.EnvVar {
 		},
 	}
 
-	if len(droplet.Spec.CodeVolumeSpec.GitDir.GitRef) > 0 {
+	if len(droplet.Spec.Drupal.CodeVolumeSpec.GitDir.GitRef) > 0 {
 		out = append(out, corev1.EnvVar{
 			Name:  "GIT_CLONE_REF",
-			Value: droplet.Spec.CodeVolumeSpec.GitDir.GitRef,
+			Value: droplet.Spec.Drupal.CodeVolumeSpec.GitDir.GitRef,
 		})
 	}
 
-	out = append(out, droplet.Spec.CodeVolumeSpec.GitDir.Env...)
+	out = append(out, droplet.Spec.Drupal.CodeVolumeSpec.GitDir.Env...)
 
 	return out
 }
 
 func (droplet *Drupal) volumeMounts() (out []corev1.VolumeMount) {
-	out = droplet.Spec.VolumeMounts
+	out = droplet.Spec.Drupal.VolumeMounts
 
 	out = append(out, corev1.VolumeMount{
 		Name:      "cm-drupal",
@@ -176,17 +176,17 @@ func (droplet *Drupal) volumeMounts() (out []corev1.VolumeMount) {
 		SubPath:   "d8.settings.php",
 	})
 
-	if droplet.Spec.CodeVolumeSpec != nil {
+	if droplet.Spec.Drupal.CodeVolumeSpec != nil {
 		out = append(out, corev1.VolumeMount{
 			Name:      codeVolumeName,
 			MountPath: codeSrcMountPath,
-			ReadOnly:  droplet.Spec.CodeVolumeSpec.ReadOnly,
+			ReadOnly:  droplet.Spec.Drupal.CodeVolumeSpec.ReadOnly,
 		})
 		out = append(out, corev1.VolumeMount{
 			Name:      codeVolumeName,
-			MountPath: droplet.Spec.CodeVolumeSpec.MountPath,
-			ReadOnly:  droplet.Spec.CodeVolumeSpec.ReadOnly,
-			SubPath:   droplet.Spec.CodeVolumeSpec.ContentSubPath,
+			MountPath: droplet.Spec.Drupal.CodeVolumeSpec.MountPath,
+			ReadOnly:  droplet.Spec.Drupal.CodeVolumeSpec.ReadOnly,
+			SubPath:   droplet.Spec.Drupal.CodeVolumeSpec.ContentSubPath,
 		})
 	}
 	return out
@@ -200,13 +200,13 @@ func (droplet *Drupal) codeVolume() corev1.Volume {
 		},
 	}
 
-	if droplet.Spec.CodeVolumeSpec != nil {
+	if droplet.Spec.Drupal.CodeVolumeSpec != nil {
 		switch {
-		case droplet.Spec.CodeVolumeSpec.GitDir != nil:
-			if droplet.Spec.CodeVolumeSpec.GitDir.EmptyDir != nil {
-				drupalCodeVolume.EmptyDir = droplet.Spec.CodeVolumeSpec.GitDir.EmptyDir
+		case droplet.Spec.Drupal.CodeVolumeSpec.GitDir != nil:
+			if droplet.Spec.Drupal.CodeVolumeSpec.GitDir.EmptyDir != nil {
+				drupalCodeVolume.EmptyDir = droplet.Spec.Drupal.CodeVolumeSpec.GitDir.EmptyDir
 			}
-		case droplet.Spec.CodeVolumeSpec.PersistentVolumeClaim != nil:
+		case droplet.Spec.Drupal.CodeVolumeSpec.PersistentVolumeClaim != nil:
 			drupalCodeVolume = corev1.Volume{
 				Name: codeVolumeName,
 				VolumeSource: corev1.VolumeSource{
@@ -215,15 +215,15 @@ func (droplet *Drupal) codeVolume() corev1.Volume {
 					},
 				},
 			}
-		case droplet.Spec.CodeVolumeSpec.HostPath != nil:
+		case droplet.Spec.Drupal.CodeVolumeSpec.HostPath != nil:
 			drupalCodeVolume = corev1.Volume{
 				Name: codeVolumeName,
 				VolumeSource: corev1.VolumeSource{
-					HostPath: droplet.Spec.CodeVolumeSpec.HostPath,
+					HostPath: droplet.Spec.Drupal.CodeVolumeSpec.HostPath,
 				},
 			}
-		case droplet.Spec.CodeVolumeSpec.EmptyDir != nil:
-			drupalCodeVolume.EmptyDir = droplet.Spec.CodeVolumeSpec.EmptyDir
+		case droplet.Spec.Drupal.CodeVolumeSpec.EmptyDir != nil:
+			drupalCodeVolume.EmptyDir = droplet.Spec.Drupal.CodeVolumeSpec.EmptyDir
 		}
 	}
 
@@ -238,9 +238,9 @@ func (droplet *Drupal) mediaVolume() corev1.Volume {
 		},
 	}
 
-	if droplet.Spec.MediaVolumeSpec != nil {
+	if droplet.Spec.Drupal.MediaVolumeSpec != nil {
 		switch {
-		case droplet.Spec.MediaVolumeSpec.PersistentVolumeClaim != nil:
+		case droplet.Spec.Drupal.MediaVolumeSpec.PersistentVolumeClaim != nil:
 			drupalMediaVolume = corev1.Volume{
 				Name: mediaVolumeName,
 				VolumeSource: corev1.VolumeSource{
@@ -249,15 +249,15 @@ func (droplet *Drupal) mediaVolume() corev1.Volume {
 					},
 				},
 			}
-		case droplet.Spec.MediaVolumeSpec.HostPath != nil:
+		case droplet.Spec.Drupal.MediaVolumeSpec.HostPath != nil:
 			drupalMediaVolume = corev1.Volume{
 				Name: mediaVolumeName,
 				VolumeSource: corev1.VolumeSource{
-					HostPath: droplet.Spec.MediaVolumeSpec.HostPath,
+					HostPath: droplet.Spec.Drupal.MediaVolumeSpec.HostPath,
 				},
 			}
-		case droplet.Spec.MediaVolumeSpec.EmptyDir != nil:
-			drupalMediaVolume.EmptyDir = droplet.Spec.MediaVolumeSpec.EmptyDir
+		case droplet.Spec.Drupal.MediaVolumeSpec.EmptyDir != nil:
+			drupalMediaVolume.EmptyDir = droplet.Spec.Drupal.MediaVolumeSpec.EmptyDir
 		}
 	}
 
@@ -280,7 +280,7 @@ func (droplet *Drupal) configMap() corev1.Volume {
 }
 
 func (droplet *Drupal) volumes() []corev1.Volume {
-	return append(droplet.Spec.Volumes, droplet.configMap(), droplet.codeVolume(), droplet.mediaVolume())
+	return append(droplet.Spec.Drupal.Volumes, droplet.configMap(), droplet.codeVolume(), droplet.mediaVolume())
 }
 
 func (droplet *Drupal) gitCloneContainer() corev1.Container {
@@ -289,7 +289,7 @@ func (droplet *Drupal) gitCloneContainer() corev1.Container {
 		Args:    []string{"/bin/bash", "-c", gitCloneScript},
 		Image:   gitCloneImage,
 		Env:     droplet.gitCloneEnv(),
-		EnvFrom: droplet.Spec.CodeVolumeSpec.GitDir.EnvFrom,
+		EnvFrom: droplet.Spec.Drupal.CodeVolumeSpec.GitDir.EnvFrom,
 		VolumeMounts: []corev1.VolumeMount{
 			{
 				Name:      codeVolumeName,
@@ -307,12 +307,12 @@ func (droplet *Drupal) PodTemplateSpec() (out corev1.PodTemplateSpec) {
 	out = corev1.PodTemplateSpec{}
 	out.ObjectMeta.Labels = droplet.PodLabels()
 
-	out.Spec.ImagePullSecrets = droplet.Spec.ImagePullSecrets
+	out.Spec.ImagePullSecrets = droplet.Spec.Drupal.ImagePullSecrets
 	if len(droplet.Spec.ServiceAccountName) > 0 {
 		out.Spec.ServiceAccountName = droplet.Spec.ServiceAccountName
 	}
 
-	if droplet.Spec.CodeVolumeSpec != nil && droplet.Spec.CodeVolumeSpec.GitDir != nil {
+	if droplet.Spec.Drupal.CodeVolumeSpec != nil && droplet.Spec.Drupal.CodeVolumeSpec.GitDir != nil {
 		out.Spec.InitContainers = []corev1.Container{
 			droplet.gitCloneContainer(),
 		}
@@ -348,14 +348,14 @@ func (droplet *Drupal) JobPodTemplateSpec(cmd ...string) (out corev1.PodTemplate
 	out = corev1.PodTemplateSpec{}
 	out.ObjectMeta.Labels = droplet.JobPodLabels()
 
-	out.Spec.ImagePullSecrets = droplet.Spec.ImagePullSecrets
+	out.Spec.ImagePullSecrets = droplet.Spec.Drupal.ImagePullSecrets
 	if len(droplet.Spec.ServiceAccountName) > 0 {
 		out.Spec.ServiceAccountName = droplet.Spec.ServiceAccountName
 	}
 
 	out.Spec.RestartPolicy = corev1.RestartPolicyNever
 
-	if droplet.Spec.CodeVolumeSpec != nil && droplet.Spec.CodeVolumeSpec.GitDir != nil {
+	if droplet.Spec.Drupal.CodeVolumeSpec != nil && droplet.Spec.Drupal.CodeVolumeSpec.GitDir != nil {
 		out.Spec.InitContainers = []corev1.Container{
 			droplet.gitCloneContainer(),
 		}

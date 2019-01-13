@@ -70,8 +70,8 @@ func NewDeploymentSyncer(droplet *nginx.Nginx, c client.Client, scheme *runtime.
 			return err
 		}
 
-		if droplet.Spec.Replicas != nil {
-			out.Spec.Replicas = droplet.Spec.Replicas
+		if droplet.Spec.Nginx.Replicas != nil {
+			out.Spec.Replicas = droplet.Spec.Nginx.Replicas
 		}
 
 		return nil

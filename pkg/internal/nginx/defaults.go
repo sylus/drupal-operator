@@ -16,18 +16,18 @@ limitations under the License.
 package nginx
 
 const (
-	defaultTag   = "0.0.1"
+	defaultTag   = "nginx-0.0.1"
 	defaultImage = "drupalwxt/site-canada"
 )
 
 // SetDefaults sets Nginx field defaults
 func (o *Nginx) SetDefaults() {
-	if len(o.Spec.Image) == 0 {
-		o.Spec.Image = defaultImage
+	if len(o.Spec.Nginx.Image) == 0 {
+		o.Spec.Nginx.Image = defaultImage
 	}
 
-	if len(o.Spec.Tag) == 0 {
-		o.Spec.Tag = defaultTag
+	if len(o.Spec.Nginx.Tag) == 0 {
+		o.Spec.Nginx.Tag = defaultTag
 	}
 
 }

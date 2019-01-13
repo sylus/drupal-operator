@@ -35,105 +35,144 @@ spec:
           type: object
         spec:
           properties:
-            code:
-              properties:
-                contentSubPath:
-                  type: string
-                emptyDir:
-                  type: object
-                git:
-                  properties:
-                    emptyDir:
-                      type: object
-                    env:
-                      items:
-                        type: object
-                      type: array
-                    envFrom:
-                      items:
-                        type: object
-                      type: array
-                    reference:
-                      type: string
-                    repository:
-                      type: string
-                  required:
-                  - repository
-                  type: object
-                hostPath:
-                  type: object
-                mountPath:
-                  type: string
-                persistentVolumeClaim:
-                  type: object
-              type: object
             domains:
               items:
                 type: string
               minItems: 1
               type: array
-            env:
-              items:
-                type: object
-              type: array
-            envFrom:
-              items:
-                type: object
-              type: array
-            image:
-              type: string
-            imagePullPolicy:
-              enum:
-              - Always
-              - IfNotPresent
-              - Never
-              type: string
-            imagePullSecrets:
-              items:
-                type: object
-              type: array
+            drupal:
+              properties:
+                code:
+                  properties:
+                    contentSubPath:
+                      type: string
+                    emptyDir:
+                      type: object
+                    git:
+                      properties:
+                        emptyDir:
+                          type: object
+                        env:
+                          items:
+                            type: object
+                          type: array
+                        envFrom:
+                          items:
+                            type: object
+                          type: array
+                        reference:
+                          type: string
+                        repository:
+                          type: string
+                      required:
+                      - repository
+                      type: object
+                    hostPath:
+                      type: object
+                    mountPath:
+                      type: string
+                    persistentVolumeClaim:
+                      type: object
+                  type: object
+                env:
+                  items:
+                    type: object
+                  type: array
+                envFrom:
+                  items:
+                    type: object
+                  type: array
+                image:
+                  type: string
+                imagePullPolicy:
+                  enum:
+                  - Always
+                  - IfNotPresent
+                  - Never
+                  type: string
+                imagePullSecrets:
+                  items:
+                    type: object
+                  type: array
+                media:
+                  properties:
+                    emptyDir:
+                      type: object
+                    gcs:
+                      properties:
+                        bucket:
+                          minLength: 1
+                          type: string
+                        env:
+                          items:
+                            type: object
+                          type: array
+                        prefix:
+                          type: string
+                      required:
+                      - bucket
+                      type: object
+                    hostPath:
+                      type: object
+                    persistentVolumeClaim:
+                      type: object
+                  type: object
+                replicas:
+                  format: int32
+                  type: integer
+                tag:
+                  type: string
+                volumeMounts:
+                  items:
+                    type: object
+                  type: array
+                volumes:
+                  items:
+                    type: object
+                  type: array
+              type: object
             ingressAnnotations:
               type: object
-            media:
+            nginx:
               properties:
-                emptyDir:
-                  type: object
-                gcs:
-                  properties:
-                    bucket:
-                      minLength: 1
-                      type: string
-                    env:
-                      items:
-                        type: object
-                      type: array
-                    prefix:
-                      type: string
-                  required:
-                  - bucket
-                  type: object
-                hostPath:
-                  type: object
-                persistentVolumeClaim:
-                  type: object
+                env:
+                  items:
+                    type: object
+                  type: array
+                envFrom:
+                  items:
+                    type: object
+                  type: array
+                image:
+                  type: string
+                imagePullPolicy:
+                  enum:
+                  - Always
+                  - IfNotPresent
+                  - Never
+                  type: string
+                imagePullSecrets:
+                  items:
+                    type: object
+                  type: array
+                replicas:
+                  format: int32
+                  type: integer
+                tag:
+                  type: string
+                volumeMounts:
+                  items:
+                    type: object
+                  type: array
+                volumes:
+                  items:
+                    type: object
+                  type: array
               type: object
-            replicas:
-              format: int32
-              type: integer
             serviceAccountName:
-              type: string
-            tag:
               type: string
             tlsSecretRef:
               type: string
-            volumeMounts:
-              items:
-                type: object
-              type: array
-            volumes:
-              items:
-                type: object
-              type: array
           required:
           - domains
           type: object
