@@ -31,8 +31,7 @@ import (
 )
 
 const (
-	nginxHTTPPort  = 80
-	nginxHTTPSPort = 443
+	nginxHTTPPort = 80
 )
 
 // NewServiceSyncer returns a new sync.Interface for reconciling Nginx Service

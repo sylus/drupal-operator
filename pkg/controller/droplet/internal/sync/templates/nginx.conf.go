@@ -66,6 +66,11 @@ http {
 				fastcgi_pass [[ .Host ]]:9000;
 			}
 
+			location ~ (^/s3/files/styles/|^/sites/.*/files/imagecache/|^/sites/.*/files/styles/) {
+				expires max;
+				try_files $uri @rewrite;
+			}
+
 			location ~* ^/(s3fs-css|s3fs-js|sites/default/files)/(.*) {
 				set $s3_base_path "stcdrupal.blob.core.windows.net/drupal-public";
 				set $file_path $2;

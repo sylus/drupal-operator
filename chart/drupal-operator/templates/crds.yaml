@@ -74,6 +74,8 @@ spec:
                     persistentVolumeClaim:
                       type: object
                   type: object
+                databaseBackend:
+                  type: string
                 env:
                   items:
                     type: object

@@ -1,6 +1,7 @@
 package templates
 
 // ConfigMapSettings Drupal settings.php file
+//nolint
 var ConfigMapSettings = `<?php
 
 /**

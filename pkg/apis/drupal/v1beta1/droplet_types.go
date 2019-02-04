@@ -97,6 +97,9 @@ type DrupalSpec struct {
 	// EnvFrom defines envFrom's which get passed into Drupal pods
 	// +optional
 	EnvFrom []corev1.EnvFromSource `json:"envFrom,omitempty"`
+	// Database Backend to use. Defaults to latest
+	// +optional
+	DatabaseBackEnd string `json:"databaseBackend,omitempty"`
 }
 
 // NginxSpec desired configuration for Nginx

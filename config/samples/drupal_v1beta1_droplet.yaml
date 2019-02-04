@@ -39,7 +39,7 @@ spec:
   drupal:
     replicas: 1
     image: drupalwxt/site-canada
-    Tag: "0.0.1"
+    tag: "0.0.1"
     env:
       - name: DRUPAL_DB_HOST
         value: mysite-mysql
@@ -48,10 +48,11 @@ spec:
           secretKeyRef:
             name: mysite-drupal-mysql-root-password
             key: password
+    databaseBackend: "postgres"
   nginx:
     replicas: 1
     image: drupalwxt/site-canada
-    Tag: "nginx-0.0.1"
+    tag: "nginx-0.0.1"
   secretRef: mysite
   tlsSecretRef: mysite-tls
   domains:

@@ -109,6 +109,8 @@ func (droplet *Nginx) PodTemplateSpec() (out corev1.PodTemplateSpec) {
 			Name:         "nginx",
 			Image:        droplet.image(),
 			VolumeMounts: droplet.volumeMounts(),
+			Env:          droplet.env(),
+			EnvFrom:      droplet.envFrom(),
 			Ports: []corev1.ContainerPort{
 				{
 					Name:          "http",

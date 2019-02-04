@@ -45,14 +45,15 @@ type Settings struct {
 func NewConfigMapSyncer(droplet *drupal.Drupal, c client.Client, scheme *runtime.Scheme) syncer.Interface {
 	objLabels := droplet.ComponentLabels(drupal.DrupalConfigMap)
 
+	databaseBackend, databasePort := droplet.DataBaseBackend()
 	templateInput := Settings{
 		Name:      "drupal",
 		User:      "root",
 		Pass:      "my-super-secret-pass",
-		Host:      fmt.Sprintf("%s-%s", droplet.ComponentName(drupal.DrupalConfigMap), "mysql"),
-		Port:      "3306",
-		Namespace: "Drupal\\Core\\Database\\Driver\\mysql",
-		Driver:    "mysql",
+		Host:      fmt.Sprintf("%s-%s", droplet.ComponentName(drupal.DrupalConfigMap), databaseBackend),
+		Port:      databasePort,
+		Namespace: fmt.Sprintf("%s%s", "Drupal\\Core\\Database\\Driver\\", databaseBackend),
+		Driver:    databaseBackend,
 	}
 	configMap := common.GenerateConfig(templateInput, templates.ConfigMapSettings)
 

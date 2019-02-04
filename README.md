@@ -26,7 +26,7 @@ helm --name drupal-operator install sylus/drupal-operator
 
 ## Usage
 
-First we need to install the mysql-operator as well as default role bindings.
+First we need to install the `mysql-operator` as well as default role bindings.
 
 ```sh
 # Create our namespace
@@ -57,14 +57,14 @@ Next we can start to utilize the Drupal operator!
 
 ```sh
 
-# Create initial database
-kubectl run mysql-client --image=mysql:5.7 -it --rm --restart=Never -- mysql -h mysite-mysql -uroot -pmy-super-secret-pass -e 'create database drupal;'
-
 # Deploy the operator (helm chart still being tested)
 make deploy
 
 # Leverage our example spec
 kubectl apply -f config/samples/drupal_v1beta1_droplet.yaml
+
+# Create initial database
+kubectl run mysql-client --image=mysql:5.7 -it --rm --restart=Never -- mysql -h mysite-mysql -uroot -pmy-super-secret-pass -e 'create database drupal;'
 
 # Run Drush and install our site
 export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/component=drupal" -o jsonpath="{.items[0].metadata.name}")

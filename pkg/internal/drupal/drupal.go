@@ -115,7 +115,7 @@ func (o *Drupal) ComponentName(component component) string {
 }
 
 // ImageTagVersion returns the version from the image tag in a format suitable
-// fro kubernetes object names and labels
+// for kubernetes object names and labels
 func (o *Drupal) ImageTagVersion() string {
 	return slugify.Slugify(o.Spec.Drupal.Tag)
 }
@@ -132,4 +132,13 @@ func (o *Drupal) JobPodLabels() labels.Set {
 	l := o.Labels()
 	l["app.kubernetes.io/component"] = "drupal-cli"
 	return l
+}
+
+// DataBaseBackend returns the type of database to leverage
+func (o *Drupal) DataBaseBackend() (string, string) {
+	if o.Spec.Drupal.DatabaseBackEnd == "postgres" {
+		return "pgsql", "5432"
+	}
+
+	return "msql", "3306"
 }
