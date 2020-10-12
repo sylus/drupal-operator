@@ -2,6 +2,8 @@
 
 Drupal Operator generated via KubeBuilder to enable managing multiple Drupal installs.
 
+> Note: This is vastly outdated and needs a complete refactoring.
+
 ## Goals
 
 The main goals of the operator are:
@@ -77,3 +79,7 @@ kubectl exec -it $POD_NAME -n default -- drush si wxt \
     install_configure_form.update_status_module='array(FALSE,FALSE)' \
     --yes
 ```
+
+## Acknowledgements
+
+Generated via [KubeBuilder](https://github.com/kubernetes-sigs/kubebuilder) with additional code and lessons learned from the [WordPress Operator](https://github.com/presslabs/wordpress-operator/).
